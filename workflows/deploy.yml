@@ -1,0 +1,32 @@
+name: Deploy Python Site to AWS
+
+on:
+  push:
+    branches:
+      - main  # Triggers deployment whenever you push to main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Source Code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Generate Deployment Package
+      run: zip -r deploy.zip . -x "*.git*"
+
+    - name: Deploy to AWS Elastic Beanstalk
+      uses: einaregilsson/beanstalk-deploy@v22
+      with:
+        aws_access_key: ${{ secrets.E153152 }}
+        aws_secret_key: ${{ secrets.Goingtoprison1099! }}
+        application_name: "my-python-app"
+        environment_name: "MyPythonApp-env"
+        version_label: "github-${{ github.sha }}"
+        region: "us-east-1" # Change to your preferred AWS region
+        deployment_package: deploy.zip
